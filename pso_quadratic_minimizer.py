@@ -25,11 +25,11 @@ def objective_function(params):
 bounds = np.array([[-10, -10, -10], [10, 10, 10]])
 n_particles = 10
 max_iter = 200
-w = 0.5
-c1 = 0.8
-c2 = 0.9
+w = 0.5 #inertia weight
+c1 = 0.8 #cognitive multiplier
+c2 = 0.9 #social multiplier
 
-particles = np.random.uniform(low=bounds[0], high=bounds[1], size=(n_particles, 3))
+particles = np.random.uniform(low=bounds[0], high=bounds[1], size=(n_particles, 3)) #position
 velocities = np.zeros((n_particles, 3))
 best_positions = particles.copy()
 best_costs = np.array([objective_function(p) for p in particles])
@@ -43,9 +43,9 @@ for i in range(max_iter):
     cognitive = c1 * r1 * (best_positions - particles)
     social = c2 * r2 * (global_best_position - particles)
 
-    velocities = w * velocities + cognitive + social
+    velocities = w * velocities + cognitive + social #velocity update
     particles += velocities
-    particles = np.clip(particles, bounds[0], bounds[1])
+    particles = np.clip(particles, bounds[0], bounds[1]) #make sure within bounds
 
     costs = np.array([objective_function(p) for p in particles])
     is_best = costs < best_costs
